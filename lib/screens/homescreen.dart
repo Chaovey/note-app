@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:note_app/constants/colors.dart';
 import 'package:note_app/models/note.dart';
-import 'package:note_app/screens/edit.dart';
+import 'package:note_app/screens/editscreen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
