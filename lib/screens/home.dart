@@ -92,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: Icons.color_lens,
             backgroundColor: Colors.grey.shade800.withOpacity(0.8),
           ),
-        )
+        ),
       ],
     );
   }
@@ -110,23 +110,27 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildSearchBar() {
-    return TextField(
-      onChanged: onSearch,
-      style: const TextStyle(fontSize: 16, color: Colors.white),
-      decoration: InputDecoration(
-        contentPadding: const EdgeInsets.symmetric(vertical: 12),
-        hintText: "Search notes...",
-        hintStyle: const TextStyle(color: Colors.grey),
-        prefixIcon: const Icon(Icons.search, color: Colors.grey),
-        fillColor: Colors.grey.shade800,
-        filled: true,
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30),
-          borderSide: const BorderSide(color: Colors.transparent),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30),
-          borderSide: const BorderSide(color: Colors.transparent),
+    return Material(
+      elevation: 14,
+      color: Colors.transparent,
+      child: TextField(
+        onChanged: onSearch,
+        style: const TextStyle(fontSize: 16, color: Colors.white),
+        decoration: InputDecoration(
+          contentPadding: const EdgeInsets.symmetric(vertical: 12),
+          hintText: "Search notes...",
+          hintStyle: const TextStyle(color: Colors.grey),
+          prefixIcon: const Icon(Icons.search, color: Colors.grey),
+          fillColor: Colors.grey.shade800,
+          filled: true,
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(30),
+            borderSide: BorderSide.none,
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(30),
+            borderSide: BorderSide.none,
+          ),
         ),
       ),
     );
@@ -154,7 +158,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: ListTile(
-          onTap: () async => _editNoteScreen(index),
+          onTap: () => _editNoteScreen(index),
           title: _buildNoteTitle(note),
           subtitle: _buildNoteSubtitle(note),
           trailing: _buildDeleteButton(index),
@@ -212,7 +216,7 @@ class _HomeScreenState extends State<HomeScreen> {
           deleteNoteAt(index);
         }
       },
-      icon: const Icon(Icons.delete),
+      icon: const Icon(Icons.delete, color: Colors.red),
     );
   }
 
