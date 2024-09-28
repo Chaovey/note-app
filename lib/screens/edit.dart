@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../models/note.dart';
 
 class EditScreen extends StatefulWidget {
@@ -11,17 +10,18 @@ class EditScreen extends StatefulWidget {
 }
 
 class _EditScreenState extends State<EditScreen> {
-  TextEditingController _titleController = TextEditingController();
-  TextEditingController _contentController = TextEditingController();
+  late TextEditingController _titleController;
+  late TextEditingController _contentController;
 
   @override
   void initState() {
-    if (widget.note != null) {
-      _titleController = TextEditingController(text: widget.note!.title);
-      _contentController = TextEditingController(text: widget.note!.content);
-    }
-
     super.initState();
+    _initializeTextControllers();
+  }
+
+  void _initializeTextControllers() {
+    _titleController = TextEditingController(text: widget.note?.title ?? '');
+    _contentController = TextEditingController(text: widget.note?.content ?? '');
   }
 
   @override
@@ -30,65 +30,88 @@ class _EditScreenState extends State<EditScreen> {
       backgroundColor: Colors.grey.shade800,
       body: Padding(
         padding: const EdgeInsets.fromLTRB(16, 40, 16, 0),
-        child: Column(children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              IconButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  padding: const EdgeInsets.all(0),
-                  icon: Container(
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                        color: Colors.grey.shade800.withOpacity(.8),
-                        borderRadius: BorderRadius.circular(10),),
-                    child: const Icon(
-                      Icons.arrow_back_ios_new,
-                      color: Colors.white,
-                    ),
-                  ))
-            ],
+        child: Column(
+          children: [
+            _buildAppBar(),
+            Expanded(child: _buildNoteEditor()),
+          ],
+        ),
+      ),
+      floatingActionButton: _buildSaveButton(),
+    );
+  }
+
+  Widget _buildAppBar() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: _buildIconWithBackground(
+            icon: Icons.arrow_back_ios_new,
+            backgroundColor: Colors.grey.shade800.withOpacity(0.8),
           ),
-          Expanded(
-              child: ListView(
-            children: [
-              TextField(
-                controller: _titleController,
-                style: const TextStyle(color: Colors.white, fontSize: 30),
-                decoration: const InputDecoration(
-                    border: InputBorder.none,
-                    hintText: 'Title',
-                    hintStyle: TextStyle(color: Colors.grey, fontSize: 30)),
-              ),
-              TextField(
-                controller: _contentController,
-                style: const TextStyle(
-                  color: Colors.white,
-                ),
-                maxLines: null,
-                decoration: const InputDecoration(
-                    border: InputBorder.none,
-                    hintText: 'Type something here',
-                    hintStyle: TextStyle(
-                      color: Colors.grey,
-                    )),
-              ),
-            ],
-          ))
-        ]),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildIconWithBackground({required IconData icon, required Color backgroundColor}) {
+    return Container(
+      width: 40,
+      height: 40,
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        borderRadius: BorderRadius.circular(10),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pop(
-              context, [_titleController.text, _contentController.text]);
-        },
-        elevation: 10,
-        backgroundColor: Colors.grey.shade800,
-        child: const Icon(Icons.save,size: 38,color: Colors.white,),
+      child: Icon(icon, color: Colors.white),
+    );
+  }
+
+  Widget _buildNoteEditor() {
+    return ListView(
+      children: [
+        _buildTitleField(),
+        _buildContentField(),
+      ],
+    );
+  }
+
+  Widget _buildTitleField() {
+    return TextField(
+      controller: _titleController,
+      style: const TextStyle(color: Colors.white, fontSize: 30),
+      decoration: const InputDecoration(
+        border: InputBorder.none,
+        hintText: 'Title',
+        hintStyle: TextStyle(color: Colors.grey, fontSize: 30),
       ),
+    );
+  }
+
+  Widget _buildContentField() {
+    return TextField(
+      controller: _contentController,
+      style: const TextStyle(color: Colors.white),
+      maxLines: null,
+      decoration: const InputDecoration(
+        border: InputBorder.none,
+        hintText: 'Type something here',
+        hintStyle: TextStyle(color: Colors.grey),
+      ),
+    );
+  }
+
+  Widget _buildSaveButton() {
+    return FloatingActionButton(
+      onPressed: () {
+        Navigator.pop(context, [_titleController.text, _contentController.text]);
+      },
+      elevation: 10,
+      backgroundColor: Colors.grey.shade800,
+      child: const Icon(Icons.save, size: 38, color: Colors.white),
     );
   }
 }
